@@ -1,10 +1,14 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+from .validators import phone_regex
 
 
 class Company(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField()
+    description = models.CharField(max_length=200,
+                                   blank=True, null=True)
 
     def __str__(self) -> str:
         return self.title
@@ -21,6 +25,7 @@ class Profile(AbstractUser):
                                    blank=True, null=True)
     company = models.ForeignKey(Company,
                                 on_delete=models.SET_NULL,
+                                related_name='profiles',
                                 blank=True, null=True)
 
 
@@ -34,10 +39,13 @@ class Number(models.Model):
     type = models.CharField(max_length=30,
                             choices=NumberTypeChoise.choices,
                             default=NumberTypeChoise.PHONE)
-    number = models.CharField(max_length=12)
+    phone_number = models.CharField(validators=[phone_regex],
+                                    max_length=15,
+                                    blank=True)
     user = models.ForeignKey(Profile,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             related_name='numbers')
     active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        return self.number
+        return self.phone_number
