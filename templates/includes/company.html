@@ -1,0 +1,17 @@
+<div class="card mb-3 mt-1 shadow-sm">
+
+    <!-- Отображение текста -->
+    <div class="card-body">
+      <p class="card-text">
+        <!-- Ссылка на компанию через @ -->
+        <a name="company_{{ company.pk }}" href="{% url 'show_company' company.slug %}">
+          <strong class="d-block text-gray-dark">{{ company.title }}</strong>
+        </a>
+        {% if company.description %}
+          {{ company.description|linebreaksbr }}
+        {% else %}
+          Здесь должно быть описание (⊙_⊙)
+        {% endif %}
+      </p>
+    </div>
+  </div>

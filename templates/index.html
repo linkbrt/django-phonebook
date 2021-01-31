@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %} Главная {% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <div class='row'><h1>Все доступные компании</h1></div>
+    {% for company in page %}
+      {% include "includes/company.html" with company=company %}
+    {% endfor %}
+
+    {% if page.has_other_pages %}
+      {% include "includes/paginator.html" with items=page paginator=paginator%}
+    {% endif %}
+  </div>
+{% endblock %}

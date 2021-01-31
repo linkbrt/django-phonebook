@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %} Сотрудник {{ person.first_name }} {% endblock %}
+
+
+{% block content %}
+<div class="card mb-3 mt-1 shadow-sm">
+
+    <!-- Отображение текста -->
+    <div class="card-body">
+      <p class="card-text">
+          <strong class="d-block text-gray-dark">{{ person.last_name }} {{ person.first_name }} {{ person.middle_name }}</strong>
+          {% for number in person.numbers.all %}
+            {% if number.type == 'Phone' %}
+              {{ number.type }}: <a href="tel:{{ number.phone_number }}">{{ number.phone_number }}</a>
+            {% else %}
+              <p>{{ number.type }}: {{ number.phone_number }}</p>
+            {% endif %}
+          {% endfor %}
+      </p>
+    </div>
+  </div>
+{% endblock %}

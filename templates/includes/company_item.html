@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %} {{ company.title }} {% endblock %}
+
+
+{% block content %}
+<div class="card mb-3 mt-1 shadow-sm">
+
+    <!-- Отображение текста -->
+    <div class="card-body">
+      <p class="card-text">
+        {% for person in company.profiles.all %}
+        <a name="person_{{ person.pk }}" href="{% url 'show_profile' company.slug person.pk %}">
+          <strong class="d-block text-gray-dark">{{ person.last_name }} {{ person.first_name }} {{ person.middle_name }}</strong>
+        </a>
+          <!-- Показывать только первый номер телефона на странице компании 
+               Все номера показываются на странице отдельного сотрудника -->
+          {% for number in person.numbers.all|slice:':1' %}
+            {% if number.type == 'Phone' %}
+              {{ number.type }}: <a href="tel:{{ number.phone_number }}">{{ number.phone_number }}</a>
+            {% else %}
+              <p>{{ number.type }}: {{ number.phone_number }}</p>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+{% endblock %}
